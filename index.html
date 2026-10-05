@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Mónica</title>
+    <title>Para ti</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
@@ -38,7 +38,7 @@
             background-color: var(--moss-green); color: white;
             border: none; padding: 12px 24px; border-radius: 30px;
             font-family: 'Montserrat', sans-serif; font-weight: 700;
-            font-size: 1rem; cursor: pointer; transition: background 0.3s;
+            font-size: 0.95rem; cursor: pointer; transition: background 0.3s;
             width: 100%; margin-bottom: 10px;
         }
         .btn:hover { background-color: var(--sage-green); }
@@ -75,7 +75,7 @@
         /* Secciones ocultas */
         #letter-section, #timer-section { display: none; }
         .timer-box {
-            font-size: 1.2rem; font-weight: 700; color: var(--moss-green);
+            font-size: 1.1rem; font-weight: 700; color: var(--moss-green);
             background: rgba(93, 109, 81, 0.1); padding: 20px;
             border-radius: 15px; margin-top: 20px;
         }
@@ -85,51 +85,115 @@
 <body>
 
 <div class="arch-container">
-    <!-- FASE 1: Pregunta Interactiva -->
+    <!-- VISTA 1: El Interrogatorio -->
     <div id="quiz-section">
-        <h1>Cimientos y Estructura</h1>
-        <p>Antes de acceder a los planos principales, una prueba de seguridad: ¿Cuál es mi excusa oficial cuando propongo pedir por Didi Food?</p>
-        <button class="btn" onclick="wrongAnswer()">"Quiero probar un lugar nuevo"</button>
-        <button class="btn" onclick="wrongAnswer()">"Hoy cocinas tú"</button>
-        <button class="btn" onclick="correctAnswer()">"Tengo mucha pereza de lavar platos"</button>
-        <p id="quiz-error" style="color: #C81D25; display: none; font-size: 0.8rem; font-weight: 700; margin-top: 10px;">Respuesta incorrecta. Revisa los cálculos estructurales.</p>
+        <h1>Control de Obra</h1>
+        <p id="question-text">Cargando...</p>
+        <div id="answers-container">
+            <!-- Los botones se inyectan con JS -->
+        </div>
+        <p id="quiz-error" style="color: #C81D25; display: none; font-size: 0.85rem; font-weight: 700; margin-top: 15px;">Respuesta incorrecta. Revisa los planos e intenta de nuevo.</p>
     </div>
 
-    <!-- FASE 2: El Sobre -->
+    <!-- VISTA 2: El Sobre -->
     <div class="envelope-wrapper" id="envelope-section">
         <div class="envelope">
             <div class="seal-btn" onclick="openLetter()">❤️</div>
         </div>
     </div>
 
-    <!-- FASE 3: La Carta y Propuesta -->
+    <!-- VISTA 3: La Carta -->
     <div id="letter-section">
         <h1>Para ti</h1>
-        <p>Hemos construido cimientos sólidos, diseñado proyectos juntos y recorrido el mundo buscando la belleza en lugares como Lisboa, donde el tiempo parece detenerse y las estructuras perduran.</p>
-        <p>Pero el proyecto más importante de mi vida no requiere concreto ni acero.</p>
+        <p>No quiero que seas una historia más, quiero que seas esa persona con la que me quede cuando el tiempo pase y todo cambie.</p>
+        <p>Por eso hoy te pregunto algo simple, pero que es el inicio de todo para mí:</p>
         <p class="look-up">Levanta la mirada y mírame un segundo.</p>
-        <p>¿Quieres ser mi novia?</p>
+        <p>¿Me permites llamarte mi novia y caminar a tu lado cada día?</p>
         <button class="btn" style="background-color: #C81D25; margin-top: 15px;" onclick="sayYes()">Sí, quiero ❤️</button>
     </div>
 
-    <!-- FASE 4: El Cronómetro -->
+    <!-- VISTA 4: El Cronómetro y Memoria -->
     <div id="timer-section">
         <h1>Nuestro Tiempo</h1>
-        <p>La estructura acaba de comenzar oficialmente.</p>
-        <div class="timer-box" id="time-display">Iniciando...</div>
+        <p id="location-text" style="font-size: 0.9rem; color: var(--sage-green); font-style: italic;">Aceptaste comenzar esta historia en Jericó, Antioquia.</p>
+        <div class="timer-box" id="time-display">Calculando...</div>
     </div>
 </div>
 
 <script>
+    // Sistema de Preguntas
+    const questions = [
+        {
+            q: "1. En un proyecto conjunto, si los cálculos exigen una viga atravesando tu sala de doble altura, ¿cuál es la solución?",
+            answers: [
+                { text: "Llorar por la estética", correct: false },
+                { text: "Ocultarla con un cielo falso", correct: false },
+                { text: "Echarle la culpa al ingeniero", correct: true }
+            ]
+        },
+        {
+            q: "2. Para que una estructura resista sismos, necesita flexibilidad. ¿Quién cede más rápido en una discusión para no colapsar?",
+            answers: [
+                { text: "Tú", correct: false },
+                { text: "Yo", correct: false },
+                { text: "Depende de quién tenga más orgullo en el momento", correct: true }
+            ]
+        },
+        {
+            q: "3. Todo ingeniero debe evaluar los riesgos del terreno, y mi zona de confort estructural está firmemente en tierra seca. Si tú decides que nuestro próximo destino incluye mar y buceo, ¿cuál es mi estrategia de supervivencia?",
+            answers: [
+                { text: "Exigir un estudio topográfico del mar", correct: false },
+                { text: "Decir que una piscina es lo mismo", correct: false },
+                { text: "Cuidarte la toalla en la arena mientras te veo ser feliz", correct: true }
+            ]
+        }
+    ];
+
+    let currentQ = 0;
     let startDate;
 
-    function wrongAnswer() {
-        document.getElementById('quiz-error').style.display = 'block';
+    // Verificar si ya aceptó en el pasado al cargar la página
+    window.onload = function() {
+        const savedDate = localStorage.getItem('proposalDate');
+        if (savedDate) {
+            // Si ya hay fecha guardada, saltar directo al cronómetro
+            startDate = parseInt(savedDate);
+            document.getElementById('quiz-section').style.display = 'none';
+            document.getElementById('timer-section').style.display = 'block';
+            setInterval(updateTimer, 1000);
+            updateTimer();
+        } else {
+            loadQuestion();
+        }
+    };
+
+    function loadQuestion() {
+        document.getElementById('quiz-error').style.display = 'none';
+        document.getElementById('question-text').innerText = questions[currentQ].q;
+        const container = document.getElementById('answers-container');
+        container.innerHTML = '';
+        
+        questions[currentQ].answers.forEach(ans => {
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.innerText = ans.text;
+            btn.onclick = () => checkAnswer(ans.correct);
+            container.appendChild(btn);
+        });
     }
 
-    function correctAnswer() {
-        document.getElementById('quiz-section').style.display = 'none';
-        document.getElementById('envelope-section').style.display = 'flex';
+    function checkAnswer(isCorrect) {
+        if (isCorrect) {
+            currentQ++;
+            if (currentQ < questions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById('quiz-section').style.display = 'none';
+                document.getElementById('envelope-section').style.display = 'flex';
+            }
+        } else {
+            document.getElementById('quiz-error').style.display = 'block';
+        }
     }
 
     function openLetter() {
@@ -141,31 +205,21 @@
         document.getElementById('letter-section').style.display = 'none';
         document.getElementById('timer-section').style.display = 'block';
         
-        // Lluvia de corazones (Confetti)
+        // Guardar el momento exacto para siempre en su celular
+        startDate = new Date().getTime();
+        localStorage.setItem('proposalDate', startDate);
+
+        // Lluvia de corazones
         var duration = 3 * 1000;
         var end = Date.now() + duration;
         (function frame() {
-            confetti({
-                particleCount: 5,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
-                colors: ['#C81D25', '#5D6D51', '#6D7F62']
-            });
-            confetti({
-                particleCount: 5,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
-                colors: ['#C81D25', '#5D6D51', '#6D7F62']
-            });
+            confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#C81D25', '#5D6D51', '#6D7F62'] });
+            confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#C81D25', '#5D6D51', '#6D7F62'] });
             if (Date.now() < end) { requestAnimationFrame(frame); }
         }());
 
-        // Iniciar el cronómetro desde el segundo exacto
-        startDate = new Date().getTime();
         setInterval(updateTimer, 1000);
-        updateTimer(); // Llamada inicial
+        updateTimer();
     }
 
     function updateTimer() {
@@ -181,6 +235,5 @@
             centuries + " siglos, " + years + " años, " + days + " días, " + seconds + " segundos";
     }
 </script>
-
 </body>
 </html>
