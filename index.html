@@ -165,19 +165,25 @@
     let currentQ = 0;
     let startDate;
 
-    window.onload = function() {
-        const savedDate = localStorage.getItem('proposalDate');
-        if (savedDate) {
-            startDate = parseInt(savedDate);
-            document.getElementById('quiz-section').style.display = 'none';
-            document.getElementById('timer-section').style.display = 'block';
-            formatExactDate(startDate);
-            setInterval(updateTimer, 1000);
-            updateTimer();
-        } else {
+// Iniciar inmediatamente cuando la estructura del HTML esté lista
+    document.addEventListener("DOMContentLoaded", function() {
+        try {
+            const savedDate = localStorage.getItem('proposalDate');
+            if (savedDate) {
+                startDate = parseInt(savedDate);
+                document.getElementById('quiz-section').style.display = 'none';
+                document.getElementById('timer-section').style.display = 'block';
+                formatExactDate(startDate);
+                setInterval(updateTimer, 1000);
+                updateTimer();
+            } else {
+                loadQuestion();
+            }
+        } catch (error) {
+            // Si el navegador bloquea la memoria por ser un archivo local, ignora y carga las preguntas
             loadQuestion();
         }
-    };
+    });
 
     function loadQuestion() {
         document.getElementById('quiz-error').style.display = 'none';
