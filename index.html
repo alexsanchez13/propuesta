@@ -18,7 +18,6 @@
             font-family: 'Montserrat', sans-serif;
             background-color: var(--cream);
             color: var(--dark-text);
-            /* Patrón de Azulejo de Lisboa sutil */
             background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2H0v-2h20v-2H0V8h20V6H0V4h20V2H0V0h22v20h2v-20h2v20h2v-20h2v20h2v-20h2v20h2v-20h2v20h2v-20h2v20h2v22H20v-1.5zM0 20h2v20H0V20zm4 0h2v20H4V20zm4 0h2v20H8V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2zm0 4h20v2H20v-2z' fill='%235D6D51' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
         }
@@ -26,13 +25,12 @@
             background: #ffffff;
             max-width: 400px; width: 100%;
             border-radius: 140px 140px 10px 10px;
-            padding: 30px 30px 40px; /* Reducido el padding superior para encajar la roseta */
+            padding: 30px 30px 40px;
             box-shadow: 0 15px 35px rgba(93, 109, 81, 0.15);
             text-align: center;
             border: 1px solid rgba(93, 109, 81, 0.2);
             position: relative;
         }
-        /* Clave de Arco - Detalle Portugués */
         .azulejo-ornament {
             width: 55px; height: 55px;
             margin: 0 auto 20px auto;
@@ -50,7 +48,6 @@
         }
         .btn:hover { background-color: var(--sage-green); }
         
-        /* Estilos del Sobre */
         .envelope-wrapper {
             position: relative; width: 240px; height: 160px;
             margin: 40px auto; display: none; justify-content: center; align-items: center;
@@ -60,7 +57,7 @@
             position: relative; border-radius: 8px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-        .envelope::before { /* Solapa */
+        .envelope::before { 
             content: ''; position: absolute; top: 0; left: 0;
             border-left: 120px solid transparent; border-right: 120px solid transparent;
             border-top: 90px solid var(--moss-green); z-index: 2; border-radius: 8px 8px 0 0;
@@ -79,7 +76,6 @@
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* Secciones ocultas */
         #letter-section, #timer-section { display: none; }
         .timer-box {
             font-size: 1.1rem; font-weight: 700; color: var(--moss-green);
@@ -87,60 +83,60 @@
             border-radius: 15px; margin-top: 20px;
         }
         .look-up { font-weight: 700; font-size: 1.1rem; color: #C81D25; margin: 25px 0; }
+        
+        /* Estilo para la fecha exacta inferior derecha */
+        .exact-date {
+            font-size: 0.75rem; color: var(--sage-green);
+            text-align: right; margin-top: 15px; margin-bottom: 0;
+            font-weight: 400; font-style: italic;
+        }
     </style>
 </head>
 <body>
 
 <div class="arch-container">
-    
-    <!-- Detalle Arquitectónico Fijo (Clave de Arco / Roseta Portuguesa) -->
     <svg class="azulejo-ornament" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <!-- Pétalos exteriores huecos -->
         <path d="M50 2 C55 38 62 45 98 50 C62 55 55 62 50 98 C45 62 38 55 2 50 C38 45 45 38 50 2 Z" fill="none" stroke="#6D7F62" stroke-width="2.5"/>
-        <!-- Estrella interior geométrica -->
         <path d="M50 16 L58 42 L84 50 L58 58 L50 84 L42 58 L16 50 L42 42 Z" fill="#5D6D51" opacity="0.9"/>
-        <!-- Anillo y punto central de conexión romántica -->
         <circle cx="50" cy="50" r="9" fill="#F4F4F0" stroke="#6D7F62" stroke-width="2"/>
         <circle cx="50" cy="50" r="3.5" fill="#C81D25"/>
     </svg>
 
-    <!-- VISTA 1: El Interrogatorio -->
     <div id="quiz-section">
         <h1>Control de Obra</h1>
         <p id="question-text">Cargando...</p>
-        <div id="answers-container">
-            <!-- Los botones se inyectan con JS -->
-        </div>
+        <div id="answers-container"></div>
         <p id="quiz-error" style="color: #C81D25; display: none; font-size: 0.85rem; font-weight: 700; margin-top: 15px;">Respuesta incorrecta. Revisa los planos e intenta de nuevo.</p>
     </div>
 
-    <!-- VISTA 2: El Sobre -->
     <div class="envelope-wrapper" id="envelope-section">
         <div class="envelope">
             <div class="seal-btn" onclick="openLetter()">❤️</div>
         </div>
     </div>
 
-    <!-- VISTA 3: La Carta -->
     <div id="letter-section">
         <h1>Para ti</h1>
-        <p>No quiero que seas una historia más, quiero que seas esa persona con la que me quede cuando el tiempo pase y todo cambie.</p>
-        <p>Por eso hoy te pregunto algo simple, pero que es el inicio de todo para mí:</p>
+        <!-- Textos en negrita -->
+        <p><strong>No quiero que seas una historia más, quiero que seas esa persona con la que me quede cuando el tiempo pase y todo cambie.</strong></p>
+        <p><strong>Por eso hoy te pregunto algo simple, pero que es el inicio de todo para mí:</strong></p>
+        
         <p class="look-up">Levanta la mirada y mírame un segundo.</p>
+        
         <p>¿Me permites llamarte mi novia y caminar a tu lado cada día?</p>
-        <button class="btn" style="background-color: #C81D25; margin-top: 15px;" onclick="sayYes()">Sí, quiero ❤️</button>
+        <button class="btn" style="background-color: #C81D25; margin-top: 15px;" onclick="sayYes()">Sí, quiero ❤️️</button>
     </div>
 
-    <!-- VISTA 4: El Cronómetro y Memoria -->
     <div id="timer-section">
         <h1>Nuestro Tiempo</h1>
         <p id="location-text" style="font-size: 0.9rem; color: var(--sage-green); font-style: italic;">Aceptaste comenzar esta historia en Jericó, Antioquia.</p>
         <div class="timer-box" id="time-display">Calculando...</div>
+        <!-- Contenedor para la fecha exacta -->
+        <p class="exact-date" id="date-display"></p>
     </div>
 </div>
 
 <script>
-    // Sistema de Preguntas
     const questions = [
         {
             q: "1. En un proyecto conjunto, si los cálculos exigen una viga atravesando tu sala de doble altura, ¿cuál es la solución?",
@@ -171,13 +167,13 @@
     let currentQ = 0;
     let startDate;
 
-    // Verificar si ya aceptó en el pasado al cargar la página
     window.onload = function() {
         const savedDate = localStorage.getItem('proposalDate');
         if (savedDate) {
             startDate = parseInt(savedDate);
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('timer-section').style.display = 'block';
+            formatExactDate(startDate);
             setInterval(updateTimer, 1000);
             updateTimer();
         } else {
@@ -225,6 +221,7 @@
         
         startDate = new Date().getTime();
         localStorage.setItem('proposalDate', startDate);
+        formatExactDate(startDate);
 
         var duration = 3 * 1000;
         var end = Date.now() + duration;
@@ -236,6 +233,13 @@
 
         setInterval(updateTimer, 1000);
         updateTimer();
+    }
+
+    function formatExactDate(timestamp) {
+        let d = new Date(timestamp);
+        let dateString = d.toLocaleDateString('es-CO'); // Formato DD/MM/AAAA
+        let timeString = d.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('date-display').innerText = "Desde: " + dateString + " - " + timeString;
     }
 
     function updateTimer() {
