@@ -78,13 +78,13 @@
 
         #letter-section, #timer-section { display: none; }
         .timer-box {
-            font-size: 1.1rem; font-weight: 700; color: var(--moss-green);
+            font-size: 0.95rem; font-weight: 700; color: var(--moss-green);
             background: rgba(93, 109, 81, 0.1); padding: 20px;
             border-radius: 15px; margin-top: 20px;
+            line-height: 1.8;
         }
         .look-up { font-weight: 700; font-size: 1.1rem; color: #C81D25; margin: 25px 0; }
         
-        /* Estilo para la fecha exacta inferior derecha */
         .exact-date {
             font-size: 0.75rem; color: var(--sage-green);
             text-align: right; margin-top: 15px; margin-bottom: 0;
@@ -117,21 +117,19 @@
 
     <div id="letter-section">
         <h1>Para ti</h1>
-        <!-- Textos en negrita -->
         <p><strong>No quiero que seas una historia más, quiero que seas esa persona con la que me quede cuando el tiempo pase y todo cambie.</strong></p>
         <p><strong>Por eso hoy te pregunto algo simple, pero que es el inicio de todo para mí:</strong></p>
         
         <p class="look-up">Levanta la mirada y mírame un segundo.</p>
         
         <p>¿Me permites llamarte mi novia y caminar a tu lado cada día?</p>
-        <button class="btn" style="background-color: #C81D25; margin-top: 15px;" onclick="sayYes()">Sí, quiero ❤️️</button>
+        <button class="btn" style="background-color: #C81D25; margin-top: 15px;" onclick="sayYes()">Sí, quiero ❤️</button>
     </div>
 
     <div id="timer-section">
         <h1>Nuestro Tiempo</h1>
         <p id="location-text" style="font-size: 0.9rem; color: var(--sage-green); font-style: italic;">Aceptaste comenzar esta historia en Jericó, Antioquia.</p>
         <div class="timer-box" id="time-display">Calculando...</div>
-        <!-- Contenedor para la fecha exacta -->
         <p class="exact-date" id="date-display"></p>
     </div>
 </div>
@@ -237,7 +235,7 @@
 
     function formatExactDate(timestamp) {
         let d = new Date(timestamp);
-        let dateString = d.toLocaleDateString('es-CO'); // Formato DD/MM/AAAA
+        let dateString = d.toLocaleDateString('es-CO'); 
         let timeString = d.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
         document.getElementById('date-display').innerText = "Desde: " + dateString + " - " + timeString;
     }
@@ -246,14 +244,8 @@
         let now = new Date().getTime();
         let distance = now - startDate;
 
-        let centuries = Math.floor(distance / (1000 * 60 * 60 * 24 * 365.25 * 100));
-        let years = Math.floor((distance % (1000 * 60 * 60 * 24 * 365.25 * 100)) / (1000 * 60 * 60 * 24 * 365.25));
-        let days = Math.floor((distance % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24));
-        let seconds = Math.floor((distance % (1000 * 60 * 60 * 24)) / 1000);
-
-        document.getElementById("time-display").innerHTML = 
-            centuries + " siglos, " + years + " años, " + days + " días, " + seconds + " segundos";
-    }
-</script>
-</body>
-</html>
+        let years = Math.floor(distance / (1000 * 60 * 60 * 24 * 365.25));
+        let months = Math.floor((distance % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.4375));
+        let days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30.4375)) / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((distance
