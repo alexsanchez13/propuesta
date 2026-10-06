@@ -26,10 +26,17 @@
             background: #ffffff;
             max-width: 400px; width: 100%;
             border-radius: 140px 140px 10px 10px;
-            padding: 50px 30px 40px;
+            padding: 30px 30px 40px; /* Reducido el padding superior para encajar la roseta */
             box-shadow: 0 15px 35px rgba(93, 109, 81, 0.15);
             text-align: center;
             border: 1px solid rgba(93, 109, 81, 0.2);
+            position: relative;
+        }
+        /* Clave de Arco - Detalle Portugués */
+        .azulejo-ornament {
+            width: 55px; height: 55px;
+            margin: 0 auto 20px auto;
+            display: block;
         }
         h1 { font-weight: 700; color: var(--moss-green); font-size: 1.5rem; margin-bottom: 20px; }
         p { font-weight: 300; font-size: 1rem; line-height: 1.6; margin-bottom: 20px; }
@@ -85,6 +92,18 @@
 <body>
 
 <div class="arch-container">
+    
+    <!-- Detalle Arquitectónico Fijo (Clave de Arco / Roseta Portuguesa) -->
+    <svg class="azulejo-ornament" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Pétalos exteriores huecos -->
+        <path d="M50 2 C55 38 62 45 98 50 C62 55 55 62 50 98 C45 62 38 55 2 50 C38 45 45 38 50 2 Z" fill="none" stroke="#6D7F62" stroke-width="2.5"/>
+        <!-- Estrella interior geométrica -->
+        <path d="M50 16 L58 42 L84 50 L58 58 L50 84 L42 58 L16 50 L42 42 Z" fill="#5D6D51" opacity="0.9"/>
+        <!-- Anillo y punto central de conexión romántica -->
+        <circle cx="50" cy="50" r="9" fill="#F4F4F0" stroke="#6D7F62" stroke-width="2"/>
+        <circle cx="50" cy="50" r="3.5" fill="#C81D25"/>
+    </svg>
+
     <!-- VISTA 1: El Interrogatorio -->
     <div id="quiz-section">
         <h1>Control de Obra</h1>
@@ -156,7 +175,6 @@
     window.onload = function() {
         const savedDate = localStorage.getItem('proposalDate');
         if (savedDate) {
-            // Si ya hay fecha guardada, saltar directo al cronómetro
             startDate = parseInt(savedDate);
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('timer-section').style.display = 'block';
@@ -205,11 +223,9 @@
         document.getElementById('letter-section').style.display = 'none';
         document.getElementById('timer-section').style.display = 'block';
         
-        // Guardar el momento exacto para siempre en su celular
         startDate = new Date().getTime();
         localStorage.setItem('proposalDate', startDate);
 
-        // Lluvia de corazones
         var duration = 3 * 1000;
         var end = Date.now() + duration;
         (function frame() {
